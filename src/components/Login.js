@@ -1,11 +1,61 @@
-
-import React, { useState } from 'react'
+import { auth } from '../utils/firebase';
+import React, { useRef, useState } from 'react'
 import Header from './Header'
-
-
+import { checkValidData } from '../utils/validate'
+import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
 const Login = () => {
 
   const[isSignInForm,setisSignInform]=useState(true)
+   const[errorMessage,seterrorMessage]=useState(null)
+   const email=useRef(null)
+   const password=useRef(null)
+   
+
+
+   const HandleButtonClick=()=>{
+    const message=checkValidData(email.current.value,password.current.value)
+    seterrorMessage(message)
+
+    if(message) return;
+
+    if(!isSignInForm){
+      createUserWithEmailAndPassword(
+        auth, email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log(user)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+
+    seterrorMessage(errorCode+ "-" +errorMessage)
+    // ..
+  });
+
+    }
+    else{
+      signInWithEmailAndPassword(
+        auth, email.current.value, password.current.value)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    seterrorMessage(errorCode+ "-" +errorMessage)
+  });
+
+
+    }
+
+
+   }
+
 
 
   const toggleSignInForm=()=>{
@@ -21,7 +71,10 @@ const Login = () => {
     alt='netflixlogo'
     />
      </div>
-    <from className=" w-3/12 absolute p-12 bg-black my-36  mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80" >
+
+
+
+    <from onSubmit={(e)=>e.preventDefault()} className=" w-3/12 absolute p-12 bg-black my-36  mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80" >
        <h1 className=" font-bold py-4 text-3xl">
         {isSignInForm?"signin":"signup"}</h1>
 
@@ -36,17 +89,26 @@ const Login = () => {
 
 
        <input 
+       ref={email}
        type="text" 
        placeholder="EmailAddress" 
        className="p-4 my-4 w-full bg-slate-700"/>
 
 
        <input
+       ref={password}
         type="password"
         placeholder="password" 
         className="p-4 my-4 w-full bg-slate-700"/>  
+         
 
-        <button className="p-4 my-6 bg-red-700 rounded-lg w-full">
+       <p className=" text-red-500 font-bold text-lg p-2 ">{errorMessage}</p>
+
+
+
+
+        <button className="p-4 my-6 bg-red-700 rounded-lg w-full"
+        onClick={HandleButtonClick}>
         {isSignInForm?"signin":"signup"} </button>
 
            <p className="py- cursor-pointer" onClick={toggleSignInForm}>
