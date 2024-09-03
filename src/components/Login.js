@@ -2,14 +2,25 @@ import { auth } from '../utils/firebase';
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidData } from '../utils/validate'
+import { updateProfile } from "firebase/auth";
 import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
+import { Navigate, useNavigate } from 'react-router-dom';
+
+
+
+
+
+
+
+
 const Login = () => {
 
   const[isSignInForm,setisSignInform]=useState(true)
    const[errorMessage,seterrorMessage]=useState(null)
    const email=useRef(null)
+   const name=useRef(null)
    const password=useRef(null)
-   
+   const navigate=useNavigate();
 
 
    const HandleButtonClick=()=>{
@@ -24,7 +35,25 @@ const Login = () => {
   .then((userCredential) => {
     // Signed up 
     const user = userCredential.user;
+
+
+    updateProfile(user, {
+      displayName:name.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
+    }).then(() => {
+      // Profile updated!
+      // ...
+      navigate("/browse")
+    }).catch((error) => {
+      // An error occurred
+      // ...
+    });
+
+
+
+
+
     console.log(user)
+   
     // ...
   })
   .catch((error) => {
@@ -42,6 +71,7 @@ const Login = () => {
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
+    navigate("/browse")
     // ...
   })
   .catch((error) => {
@@ -79,7 +109,9 @@ const Login = () => {
         {isSignInForm?"signin":"signup"}</h1>
 
 
-        {!isSignInForm &&(<input
+        {!isSignInForm &&(
+          <input
+          ref={name}
         type="text"
         placeholder="enter user name" 
         className="p-4 my-4 w-full bg-slate-700"/> )   }     
