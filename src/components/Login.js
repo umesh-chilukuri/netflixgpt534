@@ -4,8 +4,9 @@ import Header from './Header'
 import { checkValidData } from '../utils/validate'
 import { updateProfile } from "firebase/auth";
 import {  createUserWithEmailAndPassword ,signInWithEmailAndPassword} from "firebase/auth";
-import { Navigate, useNavigate } from 'react-router-dom';
-
+import {  useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 
 
@@ -21,13 +22,16 @@ const Login = () => {
    const name=useRef(null)
    const password=useRef(null)
    const navigate=useNavigate();
-
+   const dispatch=useDispatch()
 
    const HandleButtonClick=()=>{
     const message=checkValidData(email.current.value,password.current.value)
     seterrorMessage(message)
 
     if(message) return;
+
+
+
 
     if(!isSignInForm){
       createUserWithEmailAndPassword(
@@ -38,12 +42,25 @@ const Login = () => {
 
 
     updateProfile(user, {
-      displayName:name.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
-    }).then(() => {
+      displayName:name.current.value,
+       photoURL: "https://i.pinimg.com/736x/e3/70/f7/e370f7451f1b9dd00ac1f0e46418b1a6.jpg"
+    })
+    .then(() => {
+      const {uid,email,dispalyName,photoURL} = auth.currentUser;
+      dispatch(
+        addUser({
+          uid:uid,
+          email:email,
+          dispalyName:dispalyName,
+          photoURL:photoURL,
+        })
+      )
+
+
       // Profile updated!
-      // ...
       navigate("/browse")
     }).catch((error) => {
+      seterrorMessage(error.message);
       // An error occurred
       // ...
     });
@@ -65,12 +82,18 @@ const Login = () => {
   });
 
     }
+
+
+
+
+
     else{
       signInWithEmailAndPassword(
         auth, email.current.value, password.current.value)
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
+    console.log(user)
     navigate("/browse")
     // ...
   })

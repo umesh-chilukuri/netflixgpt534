@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider, useNavigate} from "react-router-dom"
+import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import React, { useEffect } from 'react'
 import Login from './Login'
 import Browse from './Browse'
@@ -31,8 +31,8 @@ const Body = () => {
             if (user) {
               // User is signed in, see docs for a list of available properties
               // https://firebase.google.com/docs/reference/js/auth.user
-              const {vid,email,dispalyName,photoURL} = user.uid;
-              dispatch(addUser({vid:vid,email:email,dispalyName:dispalyName,photoURL:photoURL,
+              const {uid,email,dispalyName,photoURL} = user;
+              dispatch(addUser({uid:uid,email:email,dispalyName:dispalyName,photoURL:photoURL,
                 
             
             }))
@@ -45,7 +45,7 @@ const Body = () => {
             }
           });
            
-    },[])
+    },[ ])
 
 
   return (
