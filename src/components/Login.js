@@ -43,7 +43,7 @@ const Login = () => {
 
     updateProfile(user, {
       displayName:name.current.value,
-       photoURL: "https://i.pinimg.com/736x/e3/70/f7/e370f7451f1b9dd00ac1f0e46418b1a6.jpg"
+       photoURL: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b7b9cd77-2f16-42ba-a311-d6732e747156/ddoaobq-d918817d-29f3-4773-b8f0-5513ebdf9792.png/v1/fill/w_1024,h_1024/naruto_icon_by_cleberricardo_ddoaobq-fullview.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2I3YjljZDc3LTJmMTYtNDJiYS1hMzExLWQ2NzMyZTc0NzE1NlwvZGRvYW9icS1kOTE4ODE3ZC0yOWYzLTQ3NzMtYjhmMC01NTEzZWJkZjk3OTIucG5nIiwiaGVpZ2h0IjoiPD0xMDI0Iiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uud2F0ZXJtYXJrIl0sIndtayI6eyJwYXRoIjoiXC93bVwvYjdiOWNkNzctMmYxNi00MmJhLWEzMTEtZDY3MzJlNzQ3MTU2XC9jbGViZXJyaWNhcmRvLTQucG5nIiwib3BhY2l0eSI6OTUsInByb3BvcnRpb25zIjowLjQ1LCJncmF2aXR5IjoiY2VudGVyIn19.sF3Vt7Z5QYLpZzu6GbQDyNmpTNwA9U3E1sUgI1Cimjc"
     })
     .then(() => {
       const {uid,email,dispalyName,photoURL} = auth.currentUser;
